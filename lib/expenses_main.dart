@@ -15,12 +15,12 @@ final List<Expense> registeredExpense = [
       title: 'Flutter Course',
       amount: 569,
       date: DateTime.now(),
-      category: Category.work),
+      expcategory: ExpCategory.work),
   Expense(
-      title: 'Oppenheimer Movie',
+      title: 'Oppenheimer',
       amount: 200,
       date: DateTime(2023, 10, 15),
-      category: Category.liesure),
+      expcategory: ExpCategory.liesure),
 ];
 
 class _ExpensesMainState extends State<ExpensesMain> {
@@ -86,7 +86,7 @@ class ExpenseItem extends StatelessWidget {
               const Spacer(),
               Row(
                 children: [
-                  Icon(categoryIcons[expense.category]),
+                  Icon(expcategoryIcons[expense.expcategory]),
                   const SizedBox(width: 4),
                   Text(expense.formattedDate),
                 ],

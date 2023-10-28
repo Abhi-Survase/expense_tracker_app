@@ -4,49 +4,92 @@ import 'package:expense_tracker_app/models/expense.dart';
 
 class ExpensesMain extends StatefulWidget {
   const ExpensesMain({super.key});
+
   @override
   State<ExpensesMain> createState() {
     return _ExpensesMainState();
   }
 }
 
-final List<Expense> registeredExpense = [
-  Expense(
-      title: 'Flutter Course',
-      amount: 569,
-      date: DateTime.now(),
-      expcategory: ExpCategory.work),
-  Expense(
-      title: 'Oppenheimer',
-      amount: 200,
-      date: DateTime(2023, 10, 15),
-      expcategory: ExpCategory.liesure),
-];
-
 class _ExpensesMainState extends State<ExpensesMain> {
+  final List<Expense> _registeredExpense = [
+    Expense(
+        title: 'Flutter Course',
+        amount: 569,
+        date: DateTime.now(),
+        expcategory: ExpCategory.work),
+    Expense(
+        title: 'Oppenheimer',
+        amount: 200,
+        date: DateTime(2023, 10, 15),
+        expcategory: ExpCategory.liesure),
+  ];
+
   void _openAddExpenseOverlay() {
-    showModalBottomSheet(
+    showModalBottomSheet<dynamic>(
+      isScrollControlled: true,
       context: context,
-      builder: (ctx) => const NewExpense(),
+      builder: (ctx) => SizedBox(
+        height: 550,
+        child: NewExpense(onAddExpense: addExpense),
+      ),
+      //Sizedbox used to create a BottomSheet with constraints of size 550
+    );
+  }
+
+  void addExpense(Expense expense) {
+    //print(expense.title);
+    setState(() {
+      _registeredExpense.add(expense);
+    });
+  }
+
+  void _removeExpense(Expense expense) {
+    final expenseIndex = _registeredExpense.indexOf(expense);
+    setState(() {
+      _registeredExpense.remove(expense);
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('Expense Removes'),
+        duration: const Duration(seconds: 3),
+        action: SnackBarAction(
+          label: 'Undo',
+          onPressed: () {
+            setState(() {
+              _registeredExpense.insert(expenseIndex, expense);
+            });
+          },
+        ),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    Widget displayContent =
+        const Center(child: Text('Enter a expense to get started!'));
+
+    if (_registeredExpense.isNotEmpty) {
+      displayContent = ExpensesList(
+          registeredExpense: _registeredExpense,
+          onRemoveExpense: _removeExpense);
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Expense Tracker'),
+        title: const Text('My Expense Tracker'),
         actions: [
           IconButton(
               onPressed: _openAddExpenseOverlay, icon: const Icon(Icons.add))
         ],
       ),
-      body: const Column(
+      body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('The Chart'),
+          const Text('The Chart'),
           Expanded(
-            child: ExpensesList(),
+            child: displayContent,
           ),
         ],
       ),
@@ -55,13 +98,22 @@ class _ExpensesMainState extends State<ExpensesMain> {
 }
 
 class ExpensesList extends StatelessWidget {
-  const ExpensesList({super.key});
-
+  const ExpensesList(
+      {super.key,
+      required this.registeredExpense,
+      required this.onRemoveExpense});
+  final void Function(Expense expense) onRemoveExpense;
+  final List<Expense> registeredExpense;
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: registeredExpense.length,
-      itemBuilder: (context, index) => ExpenseItem(registeredExpense[index]),
+      itemBuilder: (context, index) => Dismissible(
+          key: ValueKey(registeredExpense[index]),
+          onDismissed: (direction) {
+            onRemoveExpense(registeredExpense[index]);
+          },
+          child: ExpenseItem(registeredExpense[index])),
     );
   }
 }

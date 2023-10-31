@@ -68,8 +68,11 @@ class _ExpensesMainState extends State<ExpensesMain> {
 
   @override
   Widget build(BuildContext context) {
-    Widget displayContent =
-        const Center(child: Text('Enter a expense to get started!'));
+    Widget displayContent = Center(
+        child: Text(
+      'Enter an expense to get started!',
+      style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 16),
+    ));
 
     if (_registeredExpense.isNotEmpty) {
       displayContent = ExpensesList(
@@ -79,10 +82,14 @@ class _ExpensesMainState extends State<ExpensesMain> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Expense Tracker'),
+        title: const Text(
+          'My Expense Tracker',
+        ),
         actions: [
           IconButton(
-              onPressed: _openAddExpenseOverlay, icon: const Icon(Icons.add))
+            onPressed: _openAddExpenseOverlay,
+            icon: const Icon(Icons.add),
+          )
         ],
       ),
       body: Column(
@@ -110,6 +117,13 @@ class ExpensesList extends StatelessWidget {
     return ListView.builder(
       itemCount: registeredExpense.length,
       itemBuilder: (context, index) => Dismissible(
+          background: Container(
+            // color: Theme.of(context).colorScheme.error,
+            margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5.5),
+            decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.error,
+                borderRadius: BorderRadius.circular(12)),
+          ),
           key: ValueKey(registeredExpense[index]),
           onDismissed: (direction) {
             onRemoveExpense(registeredExpense[index]);
@@ -130,18 +144,21 @@ class ExpenseItem extends StatelessWidget {
         child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(expense.title),
+          Text(expense.title, style: Theme.of(context).textTheme.titleMedium),
           const SizedBox(height: 4),
           Row(
             children: [
-              Text('₹ ${expense.amount.toStringAsFixed(2)}'),
+              Text('₹ ${expense.amount.toStringAsFixed(2)}',
+                  style: Theme.of(context).textTheme.titleSmall),
               const Spacer(),
               Row(
                 children: [
                   Icon(expcategoryIcons[expense.expcategory]),
                   const SizedBox(width: 4),
-                  Text(expense.formattedDate),
+                  Text(expense.formattedDate,
+                      style: Theme.of(context).textTheme.titleSmall),
                 ],
               )
             ],

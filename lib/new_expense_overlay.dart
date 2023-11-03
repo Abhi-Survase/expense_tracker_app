@@ -19,7 +19,7 @@ class _NewExpenseState extends State<NewExpense> {
   final _titleInputController = TextEditingController();
   final _amountInputCOntroller = TextEditingController();
   DateTime? _selectedDate;
-  ExpCategory _selectedCategory = ExpCategory.liesure;
+  ExpCategory _selectedCategory = ExpCategory.leisure;
 
   void _createDatePicker() async {
     final now = DateTime.now();

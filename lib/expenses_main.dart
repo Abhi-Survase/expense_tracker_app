@@ -1,3 +1,4 @@
+import 'package:expense_tracker_app/chart.dart';
 import 'package:expense_tracker_app/new_expense_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:expense_tracker_app/models/expense.dart';
@@ -22,7 +23,7 @@ class _ExpensesMainState extends State<ExpensesMain> {
         title: 'Oppenheimer',
         amount: 200,
         date: DateTime(2023, 10, 15),
-        expcategory: ExpCategory.liesure),
+        expcategory: ExpCategory.leisure),
   ];
 
   void _openAddExpenseOverlay() {
@@ -95,7 +96,7 @@ class _ExpensesMainState extends State<ExpensesMain> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text('The Chart'),
+          Chart(expenses: _registeredExpense),
           Expanded(
             child: displayContent,
           ),

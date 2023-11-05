@@ -69,6 +69,7 @@ class _ExpensesMainState extends State<ExpensesMain> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     Widget displayContent = Center(
         child: Text(
       'Enter an expense to get started!',
@@ -93,15 +94,25 @@ class _ExpensesMainState extends State<ExpensesMain> {
           )
         ],
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Chart(expenses: _registeredExpense),
-          Expanded(
-            child: displayContent,
-          ),
-        ],
-      ),
+      body: (screenWidth < 600
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Chart(expenses: _registeredExpense),
+                Expanded(
+                  child: displayContent,
+                ),
+              ],
+            )
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(child: Chart(expenses: _registeredExpense)),
+                Expanded(
+                  child: displayContent,
+                ),
+              ],
+            )),
     );
   }
 }
@@ -118,18 +129,19 @@ class ExpensesList extends StatelessWidget {
     return ListView.builder(
       itemCount: registeredExpense.length,
       itemBuilder: (context, index) => Dismissible(
-          background: Container(
-            // color: Theme.of(context).colorScheme.error,
-            margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5.5),
-            decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.error,
-                borderRadius: BorderRadius.circular(12)),
-          ),
-          key: ValueKey(registeredExpense[index]),
-          onDismissed: (direction) {
-            onRemoveExpense(registeredExpense[index]);
-          },
-          child: ExpenseItem(registeredExpense[index])),
+        background: Container(
+          // color: Theme.of(context).colorScheme.error,
+          margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5.5),
+          decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.error,
+              borderRadius: BorderRadius.circular(12)),
+        ),
+        key: ValueKey(registeredExpense[index]),
+        onDismissed: (direction) {
+          onRemoveExpense(registeredExpense[index]);
+        },
+        child: ExpenseItem(registeredExpense[index]),
+      ),
     );
   }
 }

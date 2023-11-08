@@ -15,15 +15,10 @@ class ExpensesMain extends StatefulWidget {
 class _ExpensesMainState extends State<ExpensesMain> {
   final List<Expense> _registeredExpense = [
     Expense(
-        title: 'Flutter Course',
-        amount: 569,
+        title: 'Swipe to remove an expense',
+        amount: 420,
         date: DateTime.now(),
         expcategory: ExpCategory.work),
-    Expense(
-        title: 'Oppenheimer',
-        amount: 200,
-        date: DateTime(2023, 10, 15),
-        expcategory: ExpCategory.leisure),
   ];
 
   void _openAddExpenseOverlay() {
@@ -54,7 +49,7 @@ class _ExpensesMainState extends State<ExpensesMain> {
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text('Expense Removes'),
+        content: const Text('Expense Removed'),
         duration: const Duration(seconds: 3),
         action: SnackBarAction(
           label: 'Undo',

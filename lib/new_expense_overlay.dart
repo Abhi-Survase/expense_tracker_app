@@ -95,84 +95,90 @@ class _NewExpenseState extends State<NewExpense> {
 
   @override
   Widget build(context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          TextField(
-            controller: _titleInputController,
-            maxLength: 50,
-            decoration: const InputDecoration(label: Text('Title')),
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: _amountInputCOntroller,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    label: Text('Amount'),
-                    prefixText: '₹ ',
+    final keyboardspacing = MediaQuery.of(context).viewInsets.bottom;
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.only(
+            bottom: keyboardspacing + 16, right: 16.0, left: 16.0, top: 16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: _titleInputController,
+              maxLength: 50,
+              decoration: const InputDecoration(label: Text('Title')),
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _amountInputCOntroller,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                      label: Text('Amount'),
+                      prefixText: '₹ ',
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 14),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    (_selectedDate == null)
-                        ? 'No Date Selected'
-                        : dateFormatter.format(
-                            _selectedDate!), // ! forces flutter to assume a datatype? will never be null
-                  ),
-                  IconButton(
-                    onPressed: _createDatePicker,
-                    icon: const Icon(Icons.calendar_month),
-                  )
-                ],
-              )
-            ],
-          ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              DropdownButton(
-                value: _selectedCategory,
-                items: ExpCategory.values
-                    .map((item) => DropdownMenuItem(
-                        value: item,
-                        child: Text(
-                          item.name.toUpperCase(),
-                        )))
-                    .toList(),
-                onChanged: (value) {
-                  if (value == null) {
-                    return;
-                  }
-                  setState(() {
-                    _selectedCategory = value;
-                  });
-                  //print(value);
-                },
-              ),
-              const Spacer(),
-              TextButton(
-                style: const ButtonStyle(
-                    foregroundColor: MaterialStatePropertyAll(Colors.red)),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text('Cancel'),
-              ),
-              ElevatedButton(
-                onPressed: _submitExpenseData,
-                child: const Text('Save Expense'),
-              )
-            ],
-          ),
-        ],
+                const SizedBox(width: 14),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                        (_selectedDate == null)
+                            ? 'No Date Selected'
+                            : dateFormatter.format(_selectedDate!),
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleSmall // ! forces flutter to assume a datatype? will never be null
+                        ),
+                    IconButton(
+                      onPressed: _createDatePicker,
+                      icon: const Icon(Icons.calendar_month),
+                    )
+                  ],
+                )
+              ],
+            ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                DropdownButton(
+                  value: _selectedCategory,
+                  items: ExpCategory.values
+                      .map((item) => DropdownMenuItem(
+                          value: item,
+                          child: Text(
+                            item.name.toUpperCase(),
+                          )))
+                      .toList(),
+                  onChanged: (value) {
+                    if (value == null) {
+                      return;
+                    }
+                    setState(() {
+                      _selectedCategory = value;
+                    });
+                    //print(value);
+                  },
+                ),
+                const Spacer(),
+                TextButton(
+                  style: const ButtonStyle(
+                      foregroundColor: MaterialStatePropertyAll(Colors.red)),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Cancel'),
+                ),
+                ElevatedButton(
+                  onPressed: _submitExpenseData,
+                  child: const Text('Save Expense'),
+                )
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

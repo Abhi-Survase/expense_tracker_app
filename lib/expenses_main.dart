@@ -28,6 +28,7 @@ class _ExpensesMainState extends State<ExpensesMain> {
 
   void _openAddExpenseOverlay() {
     showModalBottomSheet<dynamic>(
+      useSafeArea: true,
       isScrollControlled: true,
       context: context,
       builder: (ctx) => SizedBox(
@@ -83,6 +84,7 @@ class _ExpensesMainState extends State<ExpensesMain> {
     }
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
           'My Expense Tracker',

@@ -61,8 +61,9 @@ class _NewExpenseState extends State<NewExpense> {
         context: context,
         builder: (ctx) => AlertDialog(
           icon: const Icon(Icons.system_security_update_warning_rounded),
-          title: const Text('Invalid Input'),
-          content: Text(err),
+          title: Text('Invalid Input',
+              style: Theme.of(context).textTheme.titleMedium),
+          content: Text(err, style: Theme.of(context).textTheme.titleSmall),
           actions: [
             TextButton(
               onPressed: () {

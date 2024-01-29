@@ -17,7 +17,6 @@ void main() {
   runApp(
     MaterialApp(
       darkTheme: ThemeData.dark().copyWith(
-        useMaterial3: true,
         colorScheme: kDarkColorScheme,
         cardTheme: const CardTheme().copyWith(
           margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5.5),
@@ -30,7 +29,6 @@ void main() {
         ),
       ),
       theme: ThemeData().copyWith(
-        useMaterial3: true,
         scaffoldBackgroundColor: kColorScheme.primaryContainer,
         colorScheme: kColorScheme,
         elevatedButtonTheme: ElevatedButtonThemeData(
